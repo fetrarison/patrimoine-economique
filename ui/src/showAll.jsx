@@ -15,7 +15,7 @@ const Show = () => {
   useEffect(() => {
     const fetchPersons = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/persons");
+        const response = await axios.get("https://patrimoine-economique-hxk0.onrender.com/api/persons");
         setPersons(response.data);
       } catch (error) {
         console.error("Erreur lors du chargement des personnes", error);
@@ -27,7 +27,7 @@ const Show = () => {
   const deletePerson = async (nom) => {
     try {
       const response = await axios.delete(
-        `http://localhost:5000/api/persons/${encodeURIComponent(nom)}`
+        `https://patrimoine-economique-hxk0.onrender.com/api/persons/${encodeURIComponent(nom)}`
       );
       console.log(response.data.message);
       setPersons(persons.filter((person) => person.nom !== nom));
@@ -52,7 +52,7 @@ const Show = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/persons/${encodeURIComponent(
+        `https://patrimoine-economique-hxk0.onrender.com/api/persons/${encodeURIComponent(
           editingPerson.nom
         )}`,
         editingPerson,
@@ -99,7 +99,7 @@ const Show = () => {
 
     try {
       await axios.put(
-        `http://localhost:5000/api/persons/${encodeURIComponent(personName)}`,
+        `https://patrimoine-economique-hxk0.onrender.com/api/persons/${encodeURIComponent(personName)}`,
         updatedPerson
       );
       setPersons(
@@ -127,7 +127,7 @@ const Show = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/persons/${encodeURIComponent(
+        `https://patrimoine-economique-hxk0.onrender.com/api/persons/${encodeURIComponent(
           editingPerson.nom
         )}`,
         updatedPerson
@@ -263,154 +263,119 @@ const Show = () => {
                   onChange={(e) =>
                     setEditingPerson({ ...editingPerson, nom: e.target.value })
                   }
-                  className="form-control mb-2 bg-dark text-light"
-                  placeholder="Name"
+                  className="form-control mb-3"
+                  placeholder="Person Name"
                 />
+                <h4>Possessions</h4>
+                {editingPerson.possessions.map((possession, index) => (
+                  <div key={index} className="mb-3">
+                    <input
+                      type="text"
+                      value={possession.type || ""}
+                      onChange={(e) =>
+                        setEditingPossession({
+                          ...editingPossession,
+                          type: e.target.value,
+                        })
+                      }
+                      className="form-control mb-2"
+                      placeholder="Type"
+                    />
+                    <input
+                      type="text"
+                      value={possession.libelle || ""}
+                      onChange={(e) =>
+                        setEditingPossession({
+                          ...editingPossession,
+                          libelle: e.target.value,
+                        })
+                      }
+                      className="form-control mb-2"
+                      placeholder="Label"
+                    />
+                    <input
+                      type="number"
+                      value={possession.valeur || ""}
+                      onChange={(e) =>
+                        setEditingPossession({
+                          ...editingPossession,
+                          valeur: e.target.value,
+                        })
+                      }
+                      className="form-control mb-2"
+                      placeholder="Value"
+                    />
+                    <input
+                      type="date"
+                      value={possession.dateDebut || ""}
+                      onChange={(e) =>
+                        setEditingPossession({
+                          ...editingPossession,
+                          dateDebut: e.target.value,
+                        })
+                      }
+                      className="form-control mb-2"
+                      placeholder="Start Date"
+                    />
+                    <input
+                      type="date"
+                      value={possession.dateFin || ""}
+                      onChange={(e) =>
+                        setEditingPossession({
+                          ...editingPossession,
+                          dateFin: e.target.value,
+                        })
+                      }
+                      className="form-control mb-2"
+                      placeholder="End Date"
+                    />
+                    <input
+                      type="number"
+                      value={possession.tauxAmortissement || ""}
+                      onChange={(e) =>
+                        setEditingPossession({
+                          ...editingPossession,
+                          tauxAmortissement: e.target.value,
+                        })
+                      }
+                      className="form-control mb-2"
+                      placeholder="Depreciation Rate"
+                    />
+                    <input
+                      type="number"
+                      value={possession.valeurConstante || ""}
+                      onChange={(e) =>
+                        setEditingPossession({
+                          ...editingPossession,
+                          valeurConstante: e.target.value,
+                        })
+                      }
+                      className="form-control mb-2"
+                      placeholder="Constant Value"
+                    />
+                    <button
+                      className="btn btn-success"
+                      onClick={savePossession}
+                    >
+                      Save
+                    </button>
+                  </div>
+                ))}
               </div>
               <div className="modal-footer">
-                <button
-                  className="btn btn-outline-secondary"
-                  onClick={() => setEditingPerson(null)}
-                >
-                  Cancel
-                </button>
-                <button className="btn btn-info" onClick={updatePerson}>
-                  Save
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {editingPossession && (
-        <div
-          className="modal fade show"
-          style={{ display: "block" }}
-          tabIndex="-1"
-          role="dialog"
-        >
-          <div className="modal-dialog" role="document">
-            <div className="modal-content bg-secondary text-light">
-              <div className="modal-header">
-                <h5 className="modal-title">Edit Possession</h5>
                 <button
                   type="button"
-                  className="btn-close"
-                  onClick={() => setEditingPossession(null)}
+                  className="btn btn-secondary"
+                  onClick={() => setEditingPerson(null)}
                 >
-                  <span>&times;</span>
+                  Close
                 </button>
-              </div>
-              <div className="modal-body">
-                <input
-                  id="possessionType"
-                  name="possessionType"
-                  type="text"
-                  value={editingPossession.type || ""}
-                  onChange={(e) =>
-                    setEditingPossession({
-                      ...editingPossession,
-                      type: e.target.value,
-                    })
-                  }
-                  className="form-control mb-2 bg-dark text-light"
-                  placeholder="Type"
-                />
-                <input
-                  id="possessionLibelle"
-                  name="possessionLibelle"
-                  type="text"
-                  value={editingPossession.libelle || ""}
-                  onChange={(e) =>
-                    setEditingPossession({
-                      ...editingPossession,
-                      libelle: e.target.value,
-                    })
-                  }
-                  className="form-control mb-2 bg-dark text-light"
-                  placeholder="Label"
-                />
-                <input
-                  id="possessionValeur"
-                  name="possessionValeur"
-                  type="number"
-                  value={editingPossession.valeur || ""}
-                  onChange={(e) =>
-                    setEditingPossession({
-                      ...editingPossession,
-                      valeur: e.target.value,
-                    })
-                  }
-                  className="form-control mb-2 bg-dark text-light"
-                  placeholder="Value"
-                />
-                <input
-                  id="possessionDateDebut"
-                  name="possessionDateDebut"
-                  type="date"
-                  value={editingPossession.dateDebut || ""}
-                  onChange={(e) =>
-                    setEditingPossession({
-                      ...editingPossession,
-                      dateDebut: e.target.value,
-                    })
-                  }
-                  className="form-control mb-2 bg-dark text-light"
-                  placeholder="Start Date"
-                />
-                <input
-                  id="possessionDateFin"
-                  name="possessionDateFin"
-                  type="date"
-                  value={editingPossession.dateFin || ""}
-                  onChange={(e) =>
-                    setEditingPossession({
-                      ...editingPossession,
-                      dateFin: e.target.value,
-                    })
-                  }
-                  className="form-control mb-2 bg-dark text-light"
-                  placeholder="End Date"
-                />
-                <input
-                  id="possessionTauxAmortissement"
-                  name="possessionTauxAmortissement"
-                  type="number"
-                  value={editingPossession.tauxAmortissement || ""}
-                  onChange={(e) =>
-                    setEditingPossession({
-                      ...editingPossession,
-                      tauxAmortissement: e.target.value,
-                    })
-                  }
-                  className="form-control mb-2 bg-dark text-light"
-                  placeholder="Depreciation Rate"
-                />
-                <input
-                  id="possessionValeurConstante"
-                  name="possessionValeurConstante"
-                  type="number"
-                  value={editingPossession.valeurConstante || ""}
-                  onChange={(e) =>
-                    setEditingPossession({
-                      ...editingPossession,
-                      valeurConstante: e.target.value,
-                    })
-                  }
-                  className="form-control mb-2 bg-dark text-light"
-                  placeholder="Constant Value"
-                />
-              </div>
-              <div className="modal-footer">
                 <button
-                  className="btn btn-outline-secondary"
-                  onClick={() => setEditingPossession(null)}
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={updatePerson}
                 >
-                  Cancel
-                </button>
-                <button className="btn btn-info" onClick={savePossession}>
-                  Save
+                  Save changes
                 </button>
               </div>
             </div>

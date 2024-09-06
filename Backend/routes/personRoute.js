@@ -12,7 +12,7 @@ const {
     deletePerson,
     getPersonByName,
     updatePerson
-} = require("../controllers/personController"); // 'personController' en minuscules
+} = require("../controllers/personController"); 
 
 router.get("/", getPersons);
 router.get("/possession", getPossessions);
