@@ -12,8 +12,7 @@ const {
     deletePerson,
     getPersonByName,
     updatePerson
-
-} = require("../controllers/PersonController");
+} = require("../controllers/personController"); // 'personController' en minuscules
 
 router.get("/", getPersons);
 router.get("/possession", getPossessions);
@@ -23,7 +22,7 @@ router.get("/:nom", getPersonByName);
 router.post("/", addPerson);
 router.post("/possession", addPossession);
 router.post("/close", closePossession);
-router.put("/:nom", updatePerson); 
+router.put("/:nom", updatePerson);
 router.put("/possession", updatePossession);
 router.delete("/:nom", deletePerson);
 

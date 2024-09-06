@@ -7,7 +7,7 @@ import PatrimoineApp from "./Patrimoine";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import Show from "./showAll";
-import "./App.css"; // Ensure this file contains custom CSS for animations and styling
+import "./App.css";
 
 const App = () => {
   return (
