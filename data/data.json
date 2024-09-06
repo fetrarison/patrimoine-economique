@@ -5,57 +5,54 @@
       {
         "type": "BienMateriel",
         "libelle": "MacBook Pro",
-        "valeur": 4000000,
+        "valeur": 4300000,
         "dateDebut": "2023-12-25",
         "dateFin": null,
         "tauxAmortissement": 5
       },
       {
+        "type": "BienMateriel",
+        "libelle": "Compte épargne",
+        "valeur": 500000,
+        "dateDebut": "2019-01-06",
+        "dateFin": null,
+        "tauxAmortissement": -5
+      },
+      {
+        "type": "BienMateriel",
+        "libelle": "Clothes",
+        "valeur": 2000000,
+        "dateDebut": "2020-01-01",
+        "dateFin": null,
+        "tauxAmortissement": 10
+      },
+      {
         "type": "Flux",
         "libelle": "Alternance",
-        "valeur": "0",
-        "dateDebut": "2022-12-31",
+        "valeur": 600000,
+        "dateDebut": "2023-02-13",
         "dateFin": null,
-        "tauxAmortissement": null,
-        "valeurConstante": 500000
+        "tauxAmortissement": 0,
+        "jour": 1,
+        "valeurConstante": 600000
       },
       {
         "type": "Flux",
         "libelle": "Survie",
-        "valeur": 0,
-        "dateDebut": "2022-12-31",
-        "dateFin": "2025-01-01",
-        "tauxAmortissement": null,
+        "valeur": 300000,
+        "dateDebut": "2023-02-13",
+        "dateFin": null,
+        "tauxAmortissement": 0,
         "jour": 2,
         "valeurConstante": -300000
-      }
-    ]
-  },
-  {
-    "nom": "arson",
-    "possessions": [
+      },
       {
         "type": "BienMateriel",
-        "libelle": "ferarri",
-        "valeur": "120000",
-        "dateDebut": "2024-09-05",
-        "dateFin": "2025-07-12",
-        "tauxAmortissement": "4",
-        "valeurConstante": "1200000"
-      }
-    ]
-  },
-  {
-    "nom": "arson",
-    "possessions": [
-      {
-        "type": "BienMateriel",
-        "libelle": "jog",
-        "valeur": "100000000",
-        "dateDebut": "2024-09-05",
-        "dateFin": "2024-12-29",
-        "tauxAmortissement": "2",
-        "valeurConstante": "100000000"
+        "libelle": "Redmi Note 9",
+        "valeur": 800000,
+        "dateDebut": "2022-12-29",
+        "dateFin": null,
+        "tauxAmortissement": 15
       }
     ]
   }

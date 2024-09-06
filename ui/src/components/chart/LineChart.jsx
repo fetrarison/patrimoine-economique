@@ -11,6 +11,7 @@ import {
   Legend,
 } from "chart.js";
 
+// Register the required components for Chart.js
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -21,71 +22,83 @@ ChartJS.register(
   Legend
 );
 
-const LineChart = ({ data }) => {
-  const prepareLineChartData = () => {
-    return {
-      labels: data.map((item) => item.label),
-      datasets: [
-        {
-          label: "Current Value",
-          data: data.map((item) => item.value),
-          borderColor: "#4e73df",
-          backgroundColor: "rgba(78, 115, 223, 0.2)",
-          borderWidth: 2,
-          tension: 0.3,
-          fill: true,
-        },
-      ],
-    };
+const Chart = () => {
+  // Sample data to test the chart
+  const sampleData = [
+    { label: "January", value: 100 },
+    { label: "February", value: 120 },
+    { label: "March", value: 90 },
+    { label: "April", value: 150 },
+    { label: "May", value: 200 },
+    { label: "June", value: 170 },
+  ];
+
+  // Prepare the data for the chart
+  const chartData = {
+    labels: sampleData.map((item) => item.label),
+    datasets: [
+      {
+        label: "Value",
+        data: sampleData.map((item) => item.value),
+        borderColor: "#4e73df",
+        backgroundColor: "rgba(78, 115, 223, 0.2)",
+        borderWidth: 2,
+        tension: 0.3,
+        fill: true,
+      },
+    ],
   };
 
+  // Chart options
   const options = {
     responsive: true,
     plugins: {
       legend: {
         display: true,
-        position: 'top',
+        position: "top",
         labels: {
-          color: '#ffffff',
+          color: "#ffffff",
           font: {
-            size: 14
-          }
-        }
+            size: 14,
+          },
+        },
       },
       tooltip: {
         callbacks: {
-          label: function(context) {
+          label: function (context) {
             return `${context.dataset.label}: ${context.raw} units`;
-          }
-        }
+          },
+        },
       },
     },
     scales: {
       x: {
         ticks: {
-          color: '#ffffff',
+          color: "#ffffff",
         },
         grid: {
-          color: '#444444',
-        }
+          color: "#444444",
+        },
       },
       y: {
         ticks: {
-          color: '#ffffff',
+          color: "#ffffff",
         },
         grid: {
-          color: '#444444',
-        }
+          color: "#444444",
+        },
       },
     },
   };
 
   return (
-    <div className="chart-container bg-dark p-4 rounded-lg shadow-lg">
-      <h2 className="text-center text-light mb-4">Possessions Line Chart</h2>
-      <Line data={prepareLineChartData()} options={options} />
+    <div className="container">
+      <h1 className="text-center text-success my-5">Sample Line Chart</h1>
+      <div className="chart-container bg-dark p-4 rounded-lg shadow-lg">
+        <Line data={chartData} options={options} />
+      </div>
     </div>
   );
 };
 
-export default LineChart;
+export default Chart;

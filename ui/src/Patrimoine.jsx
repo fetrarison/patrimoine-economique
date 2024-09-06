@@ -9,6 +9,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 import { Link } from "react-router-dom";
 import { FaEdit, FaCheckCircle, FaExclamationCircle } from "react-icons/fa";
 import "./App.css";
+import Chart from "./components/chart/LineChart";
 
 const PatrimoineApp = () => {
   const [selectedPerson, setSelectedPerson] = useState("");
@@ -208,7 +209,11 @@ const PatrimoineApp = () => {
                 Total Wealth Value: {patrimoineTotal.toFixed(2)} Ar
               </h2>
             </div>
+          
           )}
+              <div>
+              <Chart  />
+              </div>
         </div>
       )}
     </div>

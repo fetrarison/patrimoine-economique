@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Chart from "./components/chart/LineChart";
 
 const Home = () => {
   return (
@@ -7,6 +8,7 @@ const Home = () => {
       <h1 className="text-4xl font-extrabold text-center mb-4 text-primary">
         Wealth App
       </h1>
+      
       <p className="text-center text-lg mb-8">
         WELCOME TO MY APPS
       </p>
