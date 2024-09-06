@@ -1,0 +1,62 @@
+[
+  {
+    "nom": "John Doe",
+    "possessions": [
+      {
+        "type": "BienMateriel",
+        "libelle": "MacBook Pro",
+        "valeur": 4000000,
+        "dateDebut": "2023-12-25",
+        "dateFin": null,
+        "tauxAmortissement": 5
+      },
+      {
+        "type": "Flux",
+        "libelle": "Alternance",
+        "valeur": "0",
+        "dateDebut": "2022-12-31",
+        "dateFin": null,
+        "tauxAmortissement": null,
+        "valeurConstante": 500000
+      },
+      {
+        "type": "Flux",
+        "libelle": "Survie",
+        "valeur": 0,
+        "dateDebut": "2022-12-31",
+        "dateFin": "2025-01-01",
+        "tauxAmortissement": null,
+        "jour": 2,
+        "valeurConstante": -300000
+      }
+    ]
+  },
+  {
+    "nom": "arson",
+    "possessions": [
+      {
+        "type": "BienMateriel",
+        "libelle": "ferarri",
+        "valeur": "120000",
+        "dateDebut": "2024-09-05",
+        "dateFin": "2025-07-12",
+        "tauxAmortissement": "4",
+        "valeurConstante": "1200000"
+      }
+    ]
+  },
+  {
+    "nom": "arson",
+    "possessions": [
+      {
+        "type": "BienMateriel",
+        "libelle": "jog",
+        "valeur": "100000000",
+        "dateDebut": "2024-09-05",
+        "dateFin": "2024-12-29",
+        "tauxAmortissement": "2",
+        "valeurConstante": "100000000"
+      }
+    ]
+  }
+]

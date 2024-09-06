@@ -1,0 +1,145 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+}
+
+.container {
+  background-color: #cb5c5c;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease-in-out;
+}
+
+.container:hover {
+  transform: scale(1.02);
+}
+
+h1 {
+  color: #333;
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  transition: color 0.3s ease;
+}
+
+h1:hover {
+  color: #48b5c4;
+}
+
+.table {
+  border-collapse: separate;
+  border-spacing: 0 1rem;
+}
+
+.table th,
+.table td {
+  vertical-align: middle;
+  transition: background-color 0.3s ease;
+}
+
+.table th {
+  background-color: #eff7f8;
+  color: rgb(210, 74, 74);
+  font-weight: bold;
+}
+
+.table td {
+  background-color: #d4abab;
+}
+
+.table tr:hover td {
+  background-color: #e0f7fa;
+}
+
+.alert {
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.alert-danger {
+  background-color: #ffdddd;
+  color: #d9534f;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  color: #28a745;
+}
+
+.text-primary {
+  color: #081213 !important;
+}
+
+.bg-dark {
+  background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460) !important;
+  color: rgb(202, 35, 35);
+}
+
+.navbar {
+  background-color: #3e2723; /* Brown color for navbar */
+  transition: background-color 0.3s ease;
+}
+
+.navbar-brand {
+  color: #00bcd4;
+  transition: color 0.3s ease;
+}
+
+.navbar-brand:hover {
+  color: #a92a2a;
+}
+
+.nav-link {
+  color: #6f2f18; 
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #ffccbc; /* Lighter shade on hover */
+}
+
+.btn {
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #00bcd4;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #0097a7;
+  transform: scale(1.05);
+}
+
+.btn-success {
+  background-color: #28a745;
+  border: none;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+  transform: scale(1.05);
+}
+
+.btn-warning {
+  background-color: #ffc107;
+  border: none;
+}
+
+.btn-warning:hover {
+  background-color: #e0a800;
+  transform: scale(1.05);
+}
+
+.chart-container {
+  margin: 20px 0;
+  transition: transform 0.3s ease;
+}
+
+.chart-container:hover {
+  transform: scale(1.02);
+}
