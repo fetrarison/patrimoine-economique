@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min";
-import { FaTrashAlt, FaEdit, FaPlus } from "react-icons/fa";
+import { FaTrashAlt, FaEdit, FaCheckCircle } from "react-icons/fa";
 import "./App.css";
 import { Link } from "react-router-dom";
 
@@ -26,58 +24,10 @@ const Show = () => {
 
   const deletePerson = async (nom) => {
     try {
-      const response = await axios.delete(
-        `https://patrimoine-economique-hxk0.onrender.com/api/persons/${encodeURIComponent(nom)}`
-      );
-      console.log(response.data.message);
+      await axios.delete(`https://patrimoine-economique-hxk0.onrender.com/api/persons/${encodeURIComponent(nom)}`);
       setPersons(persons.filter((person) => person.nom !== nom));
     } catch (error) {
       console.error("Erreur lors de la suppression de la personne", error);
-    }
-  };
-
-  const editPerson = (nom) => {
-    const personToEdit = persons.find((person) => person.nom === nom);
-    console.log("Personne sélectionnée pour modification:", nom);
-    setEditingPerson(personToEdit);
-  };
-
-  const updatePerson = async () => {
-    if (!editingPerson || !editingPerson.nom) {
-      console.error(
-        "Les données de la personne sont manquantes ou incomplètes"
-      );
-      return;
-    }
-
-    try {
-      const response = await axios.put(
-        `https://patrimoine-economique-hxk0.onrender.com/api/persons/${encodeURIComponent(
-          editingPerson.nom
-        )}`,
-        editingPerson,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      console.log(response.data.message);
-      setPersons(
-        persons.map((person) =>
-          person.nom === editingPerson.nom ? response.data.person : person
-        )
-      );
-      setEditingPerson(null);
-    } catch (error) {
-      if (error.response) {
-        console.error("Erreur serveur:", error.response.data);
-      } else if (error.request) {
-        console.error("Pas de réponse reçue:", error.request);
-      } else {
-        console.error("Erreur de configuration:", error.message);
-      }
     }
   };
 
@@ -87,56 +37,20 @@ const Show = () => {
     setEditingPerson(personToEdit);
     setEditingPossession({ ...possessionToEdit });
     setEditingPossessionIndex(possessionIndex);
-    console.log("Possession: " + personName + possessionIndex);
-  };
-
-  const handleDeletePossession = async (personName, possessionIndex) => {
-    const personToEdit = persons.find((person) => person.nom === personName);
-    const updatedPossessions = personToEdit.possessions.filter(
-      (_, index) => index !== possessionIndex
-    );
-    const updatedPerson = { ...personToEdit, possessions: updatedPossessions };
-
-    try {
-      await axios.put(
-        `https://patrimoine-economique-hxk0.onrender.com/api/persons/${encodeURIComponent(personName)}`,
-        updatedPerson
-      );
-      setPersons(
-        persons.map((person) =>
-          person.nom === personName ? updatedPerson : person
-        )
-      );
-    } catch (error) {
-      console.error("Erreur lors de la mise à jour des possessions", error);
-    }
   };
 
   const savePossession = async () => {
-    if (
-      !editingPossession ||
-      !editingPerson ||
-      editingPossessionIndex === null
-    ) {
-      console.error("Données de possession manquantes ou incomplètes");
-      return;
-    }
+    if (!editingPossession || !editingPerson || editingPossessionIndex === null) return;
 
     const updatedPerson = { ...editingPerson };
     updatedPerson.possessions[editingPossessionIndex] = editingPossession;
 
     try {
-      const response = await axios.put(
-        `https://patrimoine-economique-hxk0.onrender.com/api/persons/${encodeURIComponent(
-          editingPerson.nom
-        )}`,
+      await axios.put(
+        `https://patrimoine-economique-hxk0.onrender.com/api/persons/${encodeURIComponent(editingPerson.nom)}`,
         updatedPerson
       );
-      setPersons(
-        persons.map((person) =>
-          person.nom === editingPerson.nom ? response.data.person : person
-        )
-      );
+      setPersons(persons.map((person) => (person.nom === editingPerson.nom ? updatedPerson : person)));
       setEditingPossession(null);
       setEditingPossessionIndex(null);
     } catch (error) {
@@ -144,21 +58,48 @@ const Show = () => {
     }
   };
 
+  const handleDeletePossession = async (personName, possessionIndex) => {
+    const personToEdit = persons.find((person) => person.nom === personName);
+    const updatedPossessions = personToEdit.possessions.filter((_, index) => index !== possessionIndex);
+    const updatedPerson = { ...personToEdit, possessions: updatedPossessions };
+
+    try {
+      await axios.put(
+        `https://patrimoine-economique-hxk0.onrender.com/api/persons/${encodeURIComponent(personName)}`,
+        updatedPerson
+      );
+      setPersons(persons.map((person) => (person.nom === personName ? updatedPerson : person)));
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour des possessions", error);
+    }
+  };
+
+  const closePossession = async (personName, possessionIndex) => {
+    const personToEdit = persons.find((person) => person.nom === personName);
+    const possessionToEdit = personToEdit.possessions[possessionIndex];
+    possessionToEdit.dateFin = new Date().toISOString().split("T")[0];
+    possessionToEdit.valeur = 0;
+
+    const updatedPerson = { ...personToEdit };
+    updatedPerson.possessions[possessionIndex] = possessionToEdit;
+
+    try {
+      await axios.put(
+        `https://patrimoine-economique-hxk0.onrender.com/api/persons/${encodeURIComponent(personName)}`,
+        updatedPerson
+      );
+      setPersons(persons.map((person) => (person.nom === personName ? updatedPerson : person)));
+    } catch (error) {
+      console.error("Erreur lors de la clôture de la possession", error);
+    }
+  };
+
   return (
-    <div className="container mt-5 bg-light text-dark p-5 rounded-lg shadow-lg">
-      <h1 className="mb-4 text-center text-primary">
-        List of People and Their Possessions
-      </h1>
-      <Link to="/possession">
-        <button
-          className="btn btn-success mb-4 py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
-          onClick={() => setEditingPerson({ nom: "", possessions: [] })}
-        >
-          <FaPlus /> Add Person
-        </button>
-      </Link>
+    <div className="container mt-5 bg-light text-dark p-5 rounded-lg shadow-lg animated fadeIn">
+      <h1 className="mb-4 text-center text-primary animated bounceIn">List of People and Their Possessions</h1>
+
       {persons.length === 0 ? (
-        <p className="text-warning">No people found.</p>
+        <p className="text-warning">No data available.</p>
       ) : (
         persons.map((person, personIndex) => (
           <div key={personIndex} className="mb-4">
@@ -166,13 +107,13 @@ const Show = () => {
               <h3>{person.nom}</h3>
               <div>
                 <button
-                  className="btn btn-warning text-light mx-2 py-2 px-3 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
-                  onClick={() => editPerson(person.nom)}
+                  className="btn btn-warning text-light mx-2 py-2 px-3 rounded-lg shadow-md hover:shadow-lg"
+                  onClick={() => handleEditPossession(person.nom, personIndex)}
                 >
                   <FaEdit /> Edit
                 </button>
                 <button
-                  className="btn btn-danger text-light mx-2 py-2 px-3 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+                  className="btn btn-danger text-light mx-2 py-2 px-3 rounded-lg shadow-md hover:shadow-lg"
                   onClick={() => deletePerson(person.nom)}
                 >
                   <FaTrashAlt /> Delete
@@ -188,199 +129,49 @@ const Show = () => {
                   <th>Start Date</th>
                   <th>End Date</th>
                   <th>Depreciation Rate</th>
-                  <th>Constant Value</th>
+                  <th>Current Value</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {person.possessions.map((possession, possessionIndex) => (
-                  <tr key={possessionIndex}>
-                    <td>{possession.type}</td>
-                    <td>{possession.libelle}</td>
-                    <td>{possession.valeur} Ar</td>
-                    <td>{possession.dateDebut}</td>
-                    <td>{possession.dateFin ? possession.dateFin : "N/A"}</td>
-                    <td>
-                      {possession.tauxAmortissement !== null
-                        ? `${possession.tauxAmortissement} %`
-                        : "N/A"}
-                    </td>
-                    <td>
-                      {possession.valeurConstante !== null
-                        ? `${possession.valeurConstante} Ar`
-                        : "N/A"}
-                    </td>
-                    <td>
-                      <button
-                        className="btn btn-warning text-light btn-sm mx-1"
-                        onClick={() =>
-                          handleEditPossession(person.nom, possessionIndex)
-                        }
-                      >
-                        <FaEdit />
-                      </button>
-                      <button
-                        className="btn btn-danger text-light btn-sm mx-1"
-                        onClick={() =>
-                          handleDeletePossession(person.nom, possessionIndex)
-                        }
-                      >
-                        <FaTrashAlt />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                {person.possessions.map((possession, possessionIndex) => {
+                  const startDate = new Date(possession.dateDebut);
+                  const currentDate = new Date();
+                  const monthsDiff =
+                    (currentDate.getFullYear() - startDate.getFullYear()) * 12 +
+                    (currentDate.getMonth() - startDate.getMonth());
+
+                  const depreciation = possession.tauxAmortissement || 0;
+                  const currentValue =
+                    possession.valeur - (possession.valeur * depreciation * monthsDiff) / 100;
+
+                  return (
+                    <tr key={possessionIndex}>
+                      <td>{possession.type}</td>
+                      <td>{possession.libelle}</td>
+                      <td>{possession.valeur} Ar</td>
+                      <td>{startDate.toLocaleDateString()}</td>
+                      <td>{possession.dateFin ? new Date(possession.dateFin).toLocaleDateString() : "N/A"}</td>
+                      <td>{depreciation} %</td>
+                      <td>{currentValue > 0 ? currentValue.toFixed(2) : 0} Ar</td>
+                      <td>
+                        <button className="btn btn-warning btn-sm mx-1" onClick={() => handleEditPossession(person.nom, possessionIndex)}>
+                          <FaEdit />
+                        </button>
+                        <button className="btn btn-danger btn-sm mx-1" onClick={() => handleDeletePossession(person.nom, possessionIndex)}>
+                          <FaTrashAlt />
+                        </button>
+                        <button className="btn btn-dark btn-sm mx-1" onClick={() => closePossession(person.nom, possessionIndex)}>
+                          <FaCheckCircle /> Clôture
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
         ))
-      )}
-      {editingPerson && (
-        <div
-          className="modal fade show"
-          style={{ display: "block" }}
-          tabIndex="-1"
-          role="dialog"
-        >
-          <div className="modal-dialog" role="document">
-            <div className="modal-content bg-secondary text-light">
-              <div className="modal-header">
-                <h5 className="modal-title">Edit Person</h5>
-                <button
-                  type="button"
-                  className="btn-close"
-                  onClick={() => setEditingPerson(null)}
-                >
-                  <span>&times;</span>
-                </button>
-              </div>
-              <div className="modal-body">
-                <input
-                  id="personName"
-                  name="personName"
-                  type="text"
-                  value={editingPerson.nom || ""}
-                  onChange={(e) =>
-                    setEditingPerson({ ...editingPerson, nom: e.target.value })
-                  }
-                  className="form-control mb-3"
-                  placeholder="Person Name"
-                />
-                <h4>Possessions</h4>
-                {editingPerson.possessions.map((possession, index) => (
-                  <div key={index} className="mb-3">
-                    <input
-                      type="text"
-                      value={possession.type || ""}
-                      onChange={(e) =>
-                        setEditingPossession({
-                          ...editingPossession,
-                          type: e.target.value,
-                        })
-                      }
-                      className="form-control mb-2"
-                      placeholder="Type"
-                    />
-                    <input
-                      type="text"
-                      value={possession.libelle || ""}
-                      onChange={(e) =>
-                        setEditingPossession({
-                          ...editingPossession,
-                          libelle: e.target.value,
-                        })
-                      }
-                      className="form-control mb-2"
-                      placeholder="Label"
-                    />
-                    <input
-                      type="number"
-                      value={possession.valeur || ""}
-                      onChange={(e) =>
-                        setEditingPossession({
-                          ...editingPossession,
-                          valeur: e.target.value,
-                        })
-                      }
-                      className="form-control mb-2"
-                      placeholder="Value"
-                    />
-                    <input
-                      type="date"
-                      value={possession.dateDebut || ""}
-                      onChange={(e) =>
-                        setEditingPossession({
-                          ...editingPossession,
-                          dateDebut: e.target.value,
-                        })
-                      }
-                      className="form-control mb-2"
-                      placeholder="Start Date"
-                    />
-                    <input
-                      type="date"
-                      value={possession.dateFin || ""}
-                      onChange={(e) =>
-                        setEditingPossession({
-                          ...editingPossession,
-                          dateFin: e.target.value,
-                        })
-                      }
-                      className="form-control mb-2"
-                      placeholder="End Date"
-                    />
-                    <input
-                      type="number"
-                      value={possession.tauxAmortissement || ""}
-                      onChange={(e) =>
-                        setEditingPossession({
-                          ...editingPossession,
-                          tauxAmortissement: e.target.value,
-                        })
-                      }
-                      className="form-control mb-2"
-                      placeholder="Depreciation Rate"
-                    />
-                    <input
-                      type="number"
-                      value={possession.valeurConstante || ""}
-                      onChange={(e) =>
-                        setEditingPossession({
-                          ...editingPossession,
-                          valeurConstante: e.target.value,
-                        })
-                      }
-                      className="form-control mb-2"
-                      placeholder="Constant Value"
-                    />
-                    <button
-                      className="btn btn-success"
-                      onClick={savePossession}
-                    >
-                      Save
-                    </button>
-                  </div>
-                ))}
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={() => setEditingPerson(null)}
-                >
-                  Close
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={updatePerson}
-                >
-                  Save changes
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
       )}
     </div>
   );

@@ -11,7 +11,7 @@ import {
   Legend,
 } from "chart.js";
 
-// Register the required components for Chart.js
+// Register required Chart.js components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -22,24 +22,13 @@ ChartJS.register(
   Legend
 );
 
-const Chart = () => {
-  // Sample data to test the chart
-  const sampleData = [
-    { label: "January", value: 100 },
-    { label: "February", value: 120 },
-    { label: "March", value: 90 },
-    { label: "April", value: 150 },
-    { label: "May", value: 200 },
-    { label: "June", value: 170 },
-  ];
-
-  // Prepare the data for the chart
-  const chartData = {
-    labels: sampleData.map((item) => item.label),
+const LineChart = ({ chartData }) => {
+  const defaultData = {
+    labels: ["January", "February", "March", "April", "May", "June"],
     datasets: [
       {
-        label: "Value",
-        data: sampleData.map((item) => item.value),
+        label: "Sample Data",
+        data: [100, 120, 90, 150, 200, 170],
         borderColor: "#4e73df",
         backgroundColor: "rgba(78, 115, 223, 0.2)",
         borderWidth: 2,
@@ -92,13 +81,10 @@ const Chart = () => {
   };
 
   return (
-    <div className="container">
-      <h1 className="text-center text-success my-5">Sample Line Chart</h1>
-      <div className="chart-container bg-dark p-4 rounded-lg shadow-lg">
-        <Line data={chartData} options={options} />
-      </div>
+    <div className="chart-container bg-dark p-4 rounded-lg shadow-lg">
+      <Line data={chartData || defaultData} options={options} />
     </div>
   );
 };
 
-export default Chart;
+export default LineChart;

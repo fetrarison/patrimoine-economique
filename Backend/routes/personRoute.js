@@ -1,29 +1,26 @@
 const express = require("express");
 const router = express.Router();
 const {
-    getPersons,
-    addPerson,
-    getPossessions,
-    addPossession,
-    updatePossession,
-    closePossession,
-    getPatrimoineByDate,
-    getPatrimoineByDateRange,
-    deletePerson,
-    getPersonByName,
-    updatePerson
-} = require("../controllers/personController"); 
+  getPersons,
+  getPersonByName,
+  addPerson,
+  addPossessionToPerson,
+  deletePerson,
+} = require("../controllers/personController");
 
+// Récupérer toutes les personnes
 router.get("/", getPersons);
-router.get("/possession", getPossessions);
-router.get("/patrimoine/:date", getPatrimoineByDate);
-router.get("/patrimoine/range", getPatrimoineByDateRange);
+
+// Récupérer une personne par nom
 router.get("/:nom", getPersonByName);
+
+// Ajouter une nouvelle personne
 router.post("/", addPerson);
-router.post("/possession", addPossession);
-router.post("/close", closePossession);
-router.put("/:nom", updatePerson);
-router.put("/possession", updatePossession);
+
+// Ajouter une possession à une personne existante
+router.put("/:nom/possession", addPossessionToPerson);
+
+// Supprimer une personne
 router.delete("/:nom", deletePerson);
 
 module.exports = router;

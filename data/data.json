@@ -1,63 +1,157 @@
 [
   {
-    "nom": "John Doe",
-    "possessions": [
-      {
-        "type": "BienMateriel",
-        "libelle": "MacBook Pro",
-        "valeur": 4300000,
-        "dateDebut": "2023-12-25",
-        "dateFin": null,
-        "tauxAmortissement": 5
-      },
-      {
-        "type": "BienMateriel",
-        "libelle": "Compte épargne",
-        "valeur": 500000,
-        "dateDebut": "2019-01-06",
-        "dateFin": null,
-        "tauxAmortissement": -5
-      },
-      {
-        "type": "BienMateriel",
-        "libelle": "Clothes",
-        "valeur": 2000000,
-        "dateDebut": "2020-01-01",
-        "dateFin": null,
-        "tauxAmortissement": 10
-      },
-      {
-        "type": "Flux",
-        "libelle": "Alternance",
-        "valeur": 600000,
-        "dateDebut": "2023-02-13",
-        "dateFin": null,
-        "tauxAmortissement": 0,
-        "jour": 1,
-        "valeurConstante": 600000
-      },
-      {
-        "type": "Flux",
-        "libelle": "Survie",
-        "valeur": 300000,
-        "dateDebut": "2023-02-13",
-        "dateFin": null,
-        "tauxAmortissement": 0,
-        "jour": 2,
-        "valeurConstante": -300000
-      },
-      {
-        "type": "BienMateriel",
-        "libelle": "Redmi Note 9",
-        "valeur": 800000,
-        "dateDebut": "2022-12-29",
-        "dateFin": null,
-        "tauxAmortissement": 15
-      }
-    ]
+    "model": "Personne",
+    "data": {
+      "nom": "John Doe"
+    }
   },
   {
-    "nom": "elina",
-    "possessions": []
+    "model": "Patrimoine",
+    "data": {
+      "possesseur": {
+        "nom": "John Doe"
+      },
+      "possessions": [
+        {
+          "possesseur": {
+            "nom": "John Doe"
+          },
+          "libelle": "MacBook Pro",
+          "valeur": 430000,
+          "dateDebut": "2023-12-25T00:00:00.000Z",
+          "dateFin": null,
+          "tauxAmortissement": 5
+        },
+        {
+          "possesseur": {
+            "nom": "John Doe"
+          },
+          "libelle": "Compte épargne",
+          "valeur": 500000,
+          "dateDebut": "2019-01-06T00:00:00.000Z",
+          "dateFin": null,
+          "tauxAmortissement": -5
+        },
+        {
+          "possesseur": {
+            "nom": "John Doe"
+          },
+          "libelle": "Clothes",
+          "valeur": 2000000,
+          "dateDebut": "2020-01-01T00:00:00.000Z",
+          "dateFin": null,
+          "tauxAmortissement": 10
+        },
+        {
+          "possesseur": {
+            "nom": "John Doe"
+          },
+          "libelle": "Alternance",
+          "valeur": 600000,
+          "dateDebut": "2023-02-13T00:00:00.000Z",
+          "dateFin": null,
+          "tauxAmortissement": 0,
+          "jour": 1,
+          "valeurConstante": 600000
+        },
+        {
+          "possesseur": {
+            "nom": "John Doe"
+          },
+          "libelle": "Survie",
+          "valeur": 300000,
+          "dateDebut": "2023-02-13T00:00:00.000Z",
+          "dateFin": null,
+          "tauxAmortissement": 0,
+          "jour": 2,
+          "valeurConstante": -300000
+        },
+        {
+          "possesseur": {
+            "nom": "John Doe"
+          },
+          "libelle": "Redmi Note 9 (Lost)",
+          "valeur": 800000,
+          "dateDebut": "2022-12-29T00:00:00.000Z",
+          "dateFin": "2024-09-08T00:00:00.000Z", 
+          "tauxAmortissement": 15
+        },
+        {
+          "possesseur": {
+            "nom": "John Doe"
+          },
+          "libelle": "Samsung Galaxy S23 (Gifted)",
+          "valeur": 1600000,
+          "dateDebut": "2024-09-08T00:00:00.000Z",
+          "dateFin": null,
+          "tauxAmortissement": 10
+        }
+      ]
+    }
+  },
+  {
+    "model": "Personne",
+    "data": {
+      "nom": "tefy",
+      "possessions": []
+    }
+  },
+  {
+    "model": "Personne",
+    "data": {
+      "nom": "fahga",
+      "possessions": []
+    }
+  },
+  {
+    "model": "Personne",
+    "data": {
+      "nom": "cami",
+      "possessions": [
+        {
+          "type": "BienMateriel",
+          "libelle": "armure",
+          "valeur": "300000",
+          "dateDebut": "2024-09-08",
+          "dateFin": "2024-12-29",
+          "tauxAmortissement": "2",
+          "valeurConstante": ""
+        }
+      ]
+    }
+  },
+  {
+    "model": "Personne",
+    "data": {
+      "nom": "cami",
+      "possessions": [
+        {
+          "type": "BienMateriel",
+          "libelle": "wawa",
+          "valeur": "19999999",
+          "dateDebut": "2024-09-08",
+          "dateFin": "2025-07-20",
+          "tauxAmortissement": "2",
+          "valeurConstante": ""
+        }
+      ]
+    }
+  },
+  {
+    "model": "Personne",
+    "data": {
+      "nom": "lita",
+      "possessions": [
+        {
+          "type": "Argent",
+          "libelle": "vola",
+          "valeur": "1000000000",
+          "dateDebut": "2024-09-08",
+          "dateFin": "2024-09-30",
+          "tauxAmortissement": "2",
+          "valeurConstante": ""
+        }
+      ]
+    }
   }
 ]

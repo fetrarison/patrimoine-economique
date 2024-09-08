@@ -1,67 +1,57 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaPlus, FaUser, FaCalendarAlt, FaTag, FaDollarSign } from "react-icons/fa";
+import { FaPlus, FaUser, FaCalendarAlt, FaDollarSign } from "react-icons/fa";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
-import "./App.css";
+import "./App.css"; // Animations
 
-const Possession = () => {
-  const [persons, setPersons] = useState([]);
-  const [newPerson, setNewPerson] = useState({ nom: "", possessions: [] });
+const Add = () => {
+  const [persons, setPersons] = useState([]); // Initialisation des personnes
+  const [selectedPerson, setSelectedPerson] = useState(""); // Pour stocker la personne sélectionnée
   const [newPossession, setNewPossession] = useState({
     type: "",
     libelle: "",
     valeur: "",
     dateDebut: "",
     dateFin: "",
-    tauxAmortissement: "",  
+    tauxAmortissement: "",
     valeurConstante: "",
   });
-  const [error, setError] = useState("");
+  const [error, setError] = useState(""); // Pour afficher les erreurs
 
+  // Chargement des personnes depuis l'API lors du premier rendu
   useEffect(() => {
     const fetchPersons = async () => {
       try {
-        const response = await axios.get("https://patrimoine-economique-hxk0.onrender.com/api/persons");
-        if (Array.isArray(response.data)) {
-          setPersons(response.data);
-        } else {
-          setPersons([]);
-        }
+        const response = await axios.get("http://localhost:5000/api/persons");
+        setPersons(response.data);
       } catch (error) {
         console.error("Erreur lors du chargement des personnes", error);
-        setPersons([]);
       }
     };
     fetchPersons();
   }, []);
 
-  const handleAddPerson = async () => {
-    if (!newPerson.nom) {
-      setError("Le nom de la personne est requis");
+  const handleAddPossession = async () => {
+    if (!newPossession.libelle || !newPossession.valeur || !newPossession.dateDebut || !selectedPerson) {
+      setError("Les champs libellé, valeur, date de début et personne sont obligatoires");
       return;
     }
 
     try {
-      const response = await axios.post("https://patrimoine-economique-hxk0.onrender.com/api/persons", newPerson);
-      setPersons([...persons, response.data]);
-      setNewPerson({ nom: "", possessions: [] });
+      const response = await axios.put(
+        `http://localhost:5000/api/persons/possession`,
+        {
+          possesseur: selectedPerson,
+          libelle: newPossession.libelle,
+          updatedPossession: newPossession,
+        }
+      );
+      console.log("Possession ajoutée avec succès", response.data);
+      resetNewPossessionForm();
     } catch (error) {
-      console.error("Erreur lors de l'ajout de la personne", error);
+      console.error("Erreur lors de l'ajout de la possession", error);
     }
-  };
-
-  const handleAddPossession = () => {
-    if (!newPossession.libelle || !newPossession.valeur || !newPossession.dateDebut) {
-      setError("Les champs libellé, valeur et date de début sont obligatoires");
-      return;
-    }
-    setNewPerson((prev) => ({
-      ...prev,
-      possessions: [...prev.possessions, newPossession],
-    }));
-    resetNewPossessionForm();
-    setError("");
   };
 
   const resetNewPossessionForm = () => {
@@ -74,31 +64,39 @@ const Possession = () => {
       tauxAmortissement: "",
       valeurConstante: "",
     });
+    setSelectedPerson(""); // Réinitialise la personne sélectionnée
   };
 
   return (
     <div className="container mt-5 p-5 bg-light rounded-lg shadow-lg animated fadeIn">
-      <h2 className="text-primary mb-4 animated bounceIn">Ajouter une nouvelle personne</h2>
+      <h2 className="text-primary mb-4 animated bounceIn">Ajouter une nouvelle possession</h2>
 
       {error && <div className="alert alert-danger animated fadeIn">{error}</div>}
 
+      {/* Sélectionner une personne */}
       <div className="form-group mb-4 animated fadeInLeft">
-        <label htmlFor="personName" className="form-label">Nom</label>
+        <label htmlFor="personSelect" className="form-label">Choisir une personne</label>
         <div className="input-group">
           <span className="input-group-text bg-primary text-light"><FaUser /></span>
-          <input
-            type="text"
-            id="personName"
+          <select
+            id="personSelect"
             className="form-control"
-            placeholder="Nom"
-            value={newPerson.nom}
-            onChange={(e) => setNewPerson({ ...newPerson, nom: e.target.value })}
-          />
+            value={selectedPerson}
+            onChange={(e) => setSelectedPerson(e.target.value)}
+          >
+            <option value="">Sélectionner une personne</option>
+            {persons.map((person, index) => (
+              <option key={`${person.nom}-${index}`} value={person.nom}>
+                {person.nom}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
       <h3 className="text-success mb-4 animated bounceIn">Ajouter des possessions:</h3>
 
+      {/* Formulaire pour ajouter une possession */}
       <div className="form-group mb-4 animated fadeInRight">
         <label htmlFor="possessionType" className="form-label">Type</label>
         <select
@@ -136,19 +134,6 @@ const Possession = () => {
           />
         </div>
 
-        <label htmlFor="possessionTauxAmortissement" className="form-label">Taux d'amortissement (%)</label>
-        <div className="input-group">
-          <span className="input-group-text bg-primary text-light"><FaTag /></span>
-          <input
-            type="number"
-            id="possessionTauxAmortissement"
-            placeholder="Taux d'amortissement"
-            className="form-control"
-            value={newPossession.tauxAmortissement}
-            onChange={(e) => setNewPossession({ ...newPossession, tauxAmortissement: e.target.value })}
-          />
-        </div>
-
         <label htmlFor="possessionDateDebut" className="form-label">Date de début</label>
         <div className="input-group">
           <span className="input-group-text bg-primary text-light"><FaCalendarAlt /></span>
@@ -178,17 +163,15 @@ const Possession = () => {
         <button className="btn btn-outline-success" onClick={handleAddPossession}>
           <FaPlus /> Ajouter Possession
         </button>
-        <button className="btn btn-outline-info" onClick={handleAddPerson}>
-          <FaPlus /> Ajouter Personne
-        </button>
       </div>
 
+      {/* Liste des personnes */}
       <div className="mt-5">
         <h4>Liste des personnes</h4>
         <ul className="list-group">
           {Array.isArray(persons) && persons.length > 0 ? (
-            persons.map((person) => (
-              <li key={person.nom} className="list-group-item d-flex justify-content-between">
+            persons.map((person, index) => (
+              <li key={`${person.nom}-${index}`} className="list-group-item d-flex justify-content-between">
                 {person.nom}
               </li>
             ))
@@ -201,4 +184,4 @@ const Possession = () => {
   );
 };
 
-export default Possession;
+export default Add;
